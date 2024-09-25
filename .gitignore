@@ -1,0 +1,8 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+app-main-backend/node_modules
+app-main-frontend/node_modules
+app-main-frontend/.pnp
+app-main-frontend/.pnp.js
+app-main-frontend/.DS_Store

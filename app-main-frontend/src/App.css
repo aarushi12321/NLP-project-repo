@@ -1,0 +1,143 @@
+.App {
+  text-align: center;
+  background-color: #301934;
+  display: flex;
+}
+
+.left-content {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+}
+
+.right-content {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+  height: 100vh;
+}
+
+.right-content.shifted {
+  margin-left: 250px;
+}
+
+.chatbot-query-container {
+  background-color: #b49cb94b;
+  position: relative;
+  width: 70%;
+  height: 5%;
+  top: 88%;
+  left: 50px;
+  z-index: 1000;
+  padding: 10px;
+}
+
+.chatbot-query-container.shifted {
+  position: relative;
+  width: calc((100% - 200px));
+  left: 20px;
+}
+
+.chatbot-footer {
+  position: fixed;
+  bottom: 1%;
+  left: 50px;
+  right: 0;
+  width: calc(100% - 50px);
+  height: 3%;
+  font-size: small;
+  color: white;
+  text-align: center;
+}
+
+.chatbot-footer.shifted {
+  left: 250px;
+  width: calc(100% - 250px);
+}
+
+.small-menu-container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 50px;
+  height: 100%;
+  background-color: black;
+  z-index: 1001;
+  color: white;
+}
+
+.small-menu-container.expanded {
+  width: 250px;
+}
+
+.history-toggle-button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  margin: 10px;
+  margin-top: 20px;
+}
+
+.large-menu {
+  position: fixed;
+  top: 0;
+  left: 50px;
+  width: 200px;
+  height: 100%;
+  background-color: #b49cb94b;
+  color: white;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.large-menu ul {
+  list-style: none;
+  padding: 20px;
+}
+
+.large-menu li {
+  margin: 15px 0;
+}
+
+.auth-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #301934;
+  color: white;
+}
+
+.auth-container {
+  padding: 20px;
+  background-color: #100f0f;
+  border-radius: 8px;
+}
+
+.auth-container input {
+  display: block;
+  margin: 10px 0;
+  padding: 8px;
+  width: 200px;
+}
+
+.auth-container button {
+  padding: 10px 20px;
+  margin-top: 10px;
+  background-color: #95689d;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.auth-page button {
+  margin-top: 10px;
+  background: none;
+  color: #95689d;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
