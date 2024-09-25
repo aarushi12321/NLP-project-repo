@@ -14,8 +14,12 @@
 .right-content {
   display: flex;
   justify-content: center;
+  align-items: center;
   flex: 1;
   height: 100vh;
+  margin-left: 50px;
+  transition: margin-left 0.5s ease-out;
+  flex-direction: column;
 }
 
 .right-content.shifted {
@@ -27,7 +31,7 @@
   position: relative;
   width: 70%;
   height: 7%;
-  top: 87%;
+  bottom: 5%;
   left: 50px;
   z-index: 1000;
   display: flex;
@@ -42,11 +46,11 @@
 
 .chat-input-form {
   display: flex;
-  flex: 1; 
+  flex: 1;
 }
 
 .chat-input {
-  flex: 1; 
+  flex: 1;
   background-color: transparent;
   height: 40px;
   padding: 10px 15px;
@@ -55,7 +59,7 @@
   box-sizing: border-box;
   color: white;
   font-size: medium;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   border: none;
   outline: none;
 }
@@ -83,7 +87,6 @@
   background-color: #71727f;
 }
 
-
 .chatbot-footer {
   position: fixed;
   bottom: 1%;
@@ -105,7 +108,7 @@
   position: fixed;
   left: 0;
   top: 0;
-  width: 50px;
+  width: 60px;
   height: 100%;
   background-color: black;
   z-index: 1001;
@@ -121,25 +124,49 @@
   border: none;
   color: white;
   cursor: pointer;
-  margin: 10px;
   margin-top: 20px;
+  padding: 10px;
+  transition: transform 0.3s ease;
+}
+
+.history-toggle-button.expanded {
+  transform: scale(1.3);
+  background-color: #ffffff44;
+  border-radius: 30px;
 }
 
 .large-menu {
   position: fixed;
   top: 0;
-  left: 50px;
-  width: 200px;
+  left: 0;
+  width: 0;
   height: 100%;
   background-color: #b49cb94b;
   color: white;
-  overflow-y: auto;
+  overflow: hidden;
   z-index: 1000;
+  transition: width 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.large-menu.expanded {
+  width: 250px;
+  opacity: 1;
+  visibility: visible;
 }
 
 .large-menu ul {
+  margin-top: 60px;
+  margin-left: 10px;
   list-style: none;
-  padding: 20px;
+  opacity: 0;
+}
+
+.large-menu.expanded ul {
+  list-style: none;
+  opacity: 1;
+  transition: opacity 0.8s;
 }
 
 .large-menu li {
@@ -185,4 +212,42 @@
   border: none;
   cursor: pointer;
   font-size: 14px;
+}
+
+.header {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #301934; /* Adjust as needed */
+  color: white;
+  position: relative;
+  width: 100%;
+}
+
+.title {
+  flex: 1;
+  text-align: center;
+  font-size: 24px;
+  margin: 10px;
+}
+
+.id-container {
+  position: absolute;
+  right: 20px; 
+}
+
+.id {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: #695669; 
+  border-radius: 50%;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  margin-right: 40px;
+  margin-top: 5px;
 }
