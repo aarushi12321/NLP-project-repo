@@ -25,7 +25,7 @@ export function ChatBox({ isSmallMenuExpanded }) {
           onChange={(e) => setMessage(e.target.value)}
         />
         <button type="submit" className="send-button">
-          Send
+          Ask
         </button>
       </form>
     </div>

@@ -26,18 +26,63 @@
   background-color: #b49cb94b;
   position: relative;
   width: 70%;
-  height: 5%;
-  top: 88%;
+  height: 7%;
+  top: 87%;
   left: 50px;
   z-index: 1000;
-  padding: 10px;
+  display: flex;
+  align-items: center;
+  border-radius: 40px;
 }
 
 .chatbot-query-container.shifted {
-  position: relative;
-  width: calc((100% - 200px));
+  width: calc(100% - 200px);
   left: 20px;
 }
+
+.chat-input-form {
+  display: flex;
+  flex: 1; 
+}
+
+.chat-input {
+  flex: 1; 
+  background-color: transparent;
+  height: 40px;
+  padding: 10px 15px;
+  border-radius: 8px;
+  outline: none;
+  box-sizing: border-box;
+  color: white;
+  font-size: medium;
+  font-family: 'Inter', sans-serif;
+  border: none;
+  outline: none;
+}
+
+.chat-input::placeholder {
+  color: #a8a8b3;
+}
+
+.send-button {
+  background-color: #695669;
+  border: none;
+  color: white;
+  padding: 0 11px;
+  margin-right: 10px;
+  height: 40px;
+  border-radius: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
+}
+
+.send-button:hover {
+  background-color: #71727f;
+}
+
 
 .chatbot-footer {
   position: fixed;

@@ -6,3 +6,5 @@ app-main-frontend/node_modules
 app-main-frontend/.pnp
 app-main-frontend/.pnp.js
 app-main-frontend/.DS_Store
+run_backend.sh
+run_frontend.sh
