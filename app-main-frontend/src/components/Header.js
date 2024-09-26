@@ -1,7 +1,7 @@
 import React from "react";
 
-export function Header({ email }) {
-  const initial = email ? email.charAt(0).toUpperCase() : "U";
+export function Header({ username }) {
+  const initial = username ? username.charAt(0).toUpperCase() : "U";
 
   return (
     <header className="header">

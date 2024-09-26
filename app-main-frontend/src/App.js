@@ -10,7 +10,7 @@ import { ChatBoxInteraction } from "./components/NLPFeatures/ChatBoxInteract";
 function Right({ isSmallMenuExpanded }) {
   return (
     <div className={`right-content ${isSmallMenuExpanded ? "shifted" : ""}`}>
-      <Header email={""} />
+      <Header username={`${localStorage.getItem('username')}`} />
       <ChatBoxInteraction isSmallMenuExpanded={isSmallMenuExpanded} />
       <ChatBox isSmallMenuExpanded={isSmallMenuExpanded} />
       <Footer isSmallMenuExpanded={isSmallMenuExpanded} />

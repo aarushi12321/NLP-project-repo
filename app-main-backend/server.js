@@ -28,8 +28,8 @@ app.post('/api/signup', async (req, res) => {
 });
 
 app.post('/api/signin', async (req, res) => {
-  const { email, password } = req.body;
-  const user = await User.findOne({ email, password });
+  const { username, password  } = req.body;
+  const user = await User.findOne({ username, password });
   if (user) {
     console.log('User saved:', user);
     res.json({ success: true });
