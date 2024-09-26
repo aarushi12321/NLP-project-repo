@@ -215,11 +215,11 @@
 }
 
 .header {
-  flex: 1;
+  flex: 0.3 1;
   display: flex;
   justify-content: space-between;
   padding: 10px 20px;
-  background-color: #301934; /* Adjust as needed */
+  background-color: #301934; 
   color: white;
   position: relative;
   width: 100%;
@@ -234,7 +234,7 @@
 
 .id-container {
   position: absolute;
-  right: 20px; 
+  right: 20px;
 }
 
 .id {
@@ -243,11 +243,29 @@
   justify-content: center;
   width: 40px;
   height: 40px;
-  background-color: #695669; 
+  background-color: #695669;
   border-radius: 50%;
   color: white;
   font-size: 18px;
   font-weight: bold;
   margin-right: 40px;
   margin-top: 5px;
+}
+
+.chat-box-interaction-container {
+  flex: 1;
+  width: 70%;
+  margin-left: 100px;
+  color: white;
+  background-color: rgba(255, 255, 255, 0.117);
+  position: relative;
+  bottom: 10%;
+  border-radius: 30px;
+  box-shadow: #18181847 1px;
+  overflow-y: scroll;
+  
+}
+.chat-box-interaction-container.shifted {
+  transition: margin-left 0.5s ease-out;
+  margin-left: 0px;
 }

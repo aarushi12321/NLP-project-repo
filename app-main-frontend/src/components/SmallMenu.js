@@ -1,6 +1,6 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHistory } from "@fortawesome/free-solid-svg-icons";
+import { faFile, faHistory } from "@fortawesome/free-solid-svg-icons";
 
 export function SmallMenu({ isSmallMenuExpanded, toggleMenu }) {
   return (

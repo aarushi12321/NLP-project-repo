@@ -5,11 +5,13 @@ import { ChatBox } from "./components/ChatBox";
 import { SmallMenu } from "./components/SmallMenu";
 import { LargeMenu } from "./components/LargeMenu";
 import { Header } from "./components/Header";
+import { ChatBoxInteraction } from "./components/NLPFeatures/ChatBoxInteract";
 
 function Right({ isSmallMenuExpanded }) {
   return (
     <div className={`right-content ${isSmallMenuExpanded ? "shifted" : ""}`}>
       <Header email={""} />
+      <ChatBoxInteraction isSmallMenuExpanded={isSmallMenuExpanded} />
       <ChatBox isSmallMenuExpanded={isSmallMenuExpanded} />
       <Footer isSmallMenuExpanded={isSmallMenuExpanded} />
     </div>
