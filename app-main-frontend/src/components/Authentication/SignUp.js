@@ -15,6 +15,8 @@ export function SignUp({ onAuthSuccess }) {
         password,
       });
       if (response.data.success) {
+        localStorage.setItem("userEmail", email);
+        localStorage.setItem("username", username);
         onAuthSuccess();
       }
     } catch (error) {
