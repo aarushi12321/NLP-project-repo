@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
+import './ChatBox.css';
 
 export function ChatBox({ isSmallMenuExpanded }) {
   const [messages, setMessages] = useState([]);
   const [userInput, setUserInput] = useState('');
 
+  const handleReset = () => {
+    setMessages([]);
+  }
   const handleSend = async () => {
     if (!userInput.trim()) return;
 
@@ -29,6 +33,13 @@ export function ChatBox({ isSmallMenuExpanded }) {
       }`}
     >
       <form className="chat-input-form">
+      <div className="chat-box">
+          {messages.map((msg, index) => (
+              <div key={index} className={msg.role}>
+                  {msg.content}
+              </div>
+           ))}
+        </div>
         <input
           type="text"
           className="chat-input"
@@ -38,6 +49,9 @@ export function ChatBox({ isSmallMenuExpanded }) {
         />
         <button type="submit" className="send-button" onClick={handleSend}>
           Send
+        </button>
+        <button onClick={handleReset} style={{  backgroundColor: '#e53935' }}>
+          Reset Chat
         </button>
       </form>
     </div>
