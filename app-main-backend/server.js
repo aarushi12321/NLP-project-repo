@@ -6,10 +6,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect('mongodb://localhost:27017/mydatabase', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+const dbConnect = async () => {
+  await mongoose.connect('mongodb://localhost:27017/mydatabase', {
+}).then(() => {console.log('connected')},
+error => {
+    console.error(`Connection error: ${error.stack}`)
+    process.exit(1)
+})};
 
 
 const UserSchema = new mongoose.Schema({
@@ -37,6 +40,8 @@ app.post('/api/signin', async (req, res) => {
     res.json({ success: false });
   }
 });
+
+dbConnect()
 
 app.listen(5001, () => {
   console.log('Server is running on port 5001');
