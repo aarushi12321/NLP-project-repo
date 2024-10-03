@@ -1,26 +1,35 @@
 button {
-    border: none;
-    color: white;
-    padding: 0 11px;
-    margin-right: 10px;
-    height: 40px;
-    border-radius: 40px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.3s;
+  border: none;
+  color: white;
+  padding: 0 11px;
+  margin-right: 10px;
+  height: 40px;
+  border-radius: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
 }
 
-button:hover {
-    background-color: #c3ded9;
+.send-button:hover {
+  background-color: #c3ded9;
+  color: #95689d;
 }
 
+.reset-chat-button {
+  background-color: #e53935;
+}
+
+.reset-chat-button:hover {
+  background-color: #c3ded9;
+  color: #95689d;
+}
 
 button[type="reset"] {
-    background-color: #f0e3e2;
+  background-color: #f0e3e2;
 }
 
 button[type="reset"]:hover {
-    background-color: #c8b6b6; 
+  background-color: #c8b6b6;
 }

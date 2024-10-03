@@ -121,19 +121,21 @@
 }
 
 .history-toggle-button {
+  align-self: center;
   background: none;
   border: none;
   color: white;
   cursor: pointer;
   margin-top: 20px;
-  padding: 10px;
+  margin-left: 7px;
+  padding: 10px 13px;
   transition: transform 0.3s ease;
 }
 
 .history-toggle-button.expanded {
   transform: scale(1.3);
   background-color: #ffffff44;
-  border-radius: 30px;
+  border-radius: 50%;
 }
 
 .large-menu {
@@ -220,7 +222,7 @@
   display: flex;
   justify-content: space-between;
   padding: 10px 20px;
-  background-color: #301934; 
+  background-color: #301934;
   color: white;
   position: relative;
   width: 100%;
@@ -264,7 +266,6 @@
   border-radius: 30px;
   box-shadow: #18181847 1px;
   overflow-y: scroll;
-  
 }
 .chat-box-interaction-container.shifted {
   transition: margin-left 0.5s ease-out;
