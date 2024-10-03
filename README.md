@@ -10,6 +10,7 @@ Contributors
 Overall Goal :
 Use simple language and fun elements to create an intuitive, exciting chat-bot
 for kids.
+
 Scope :
 The prototype will have the following features : 
 Have customisable features for the type of chats the user wants to have -
