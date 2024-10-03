@@ -1,28 +1,30 @@
 import React, { useState } from "react";
 import axios from "axios";
-import './ChatBox.css';
+import "./ChatBox.css";
 
 export function ChatBox({ isSmallMenuExpanded }) {
   const [messages, setMessages] = useState([]);
-  const [userInput, setUserInput] = useState('');
+  const [userInput, setUserInput] = useState("");
 
-  const handleReset = () => {
+  const handleReset = (event) => {
+    event.preventDefault();
     setMessages([]);
-  }
-  const handleSend = async () => {
+  };
+  const handleSend = async (event) => {
+    event.preventDefault();
     if (!userInput.trim()) return;
 
-    const userMessage = { role: 'user', content: userInput };
+    const userMessage = { role: "user", content: userInput };
     setMessages((prevMessages) => [...prevMessages, userMessage]);
 
-    setUserInput('');
+    setUserInput("");
 
     try {
-        const response = await axios.post('/chat', { message: userInput });
-        const botMessage = { role: 'bot', content: response.data.reply };
-        setMessages((prevMessages) => [...prevMessages, botMessage]);
+      const response = await axios.post("/chat", { message: userInput });
+      const botMessage = { role: "bot", content: response.data.reply };
+      setMessages((prevMessages) => [...prevMessages, botMessage]);
     } catch (error) {
-        console.error('Error fetching the response:', error);
+      console.error("Error fetching the response:", error);
     }
   };
 
@@ -33,12 +35,12 @@ export function ChatBox({ isSmallMenuExpanded }) {
       }`}
     >
       <form className="chat-input-form">
-      <div className="chat-box">
+        <div className="chat-box">
           {messages.map((msg, index) => (
-              <div key={index} className={msg.role}>
-                  {msg.content}
-              </div>
-           ))}
+            <div key={index} className={msg.role}>
+              {msg.content}
+            </div>
+          ))}
         </div>
         <input
           type="text"
@@ -50,7 +52,7 @@ export function ChatBox({ isSmallMenuExpanded }) {
         <button type="submit" className="send-button" onClick={handleSend}>
           Send
         </button>
-        <button onClick={handleReset} style={{  backgroundColor: '#e53935' }}>
+        <button className="reset-chat-button" onClick={handleReset}>
           Reset Chat
         </button>
       </form>
