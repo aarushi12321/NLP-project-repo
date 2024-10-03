@@ -4,13 +4,14 @@ import { Footer } from "./components/Footer";
 import { ChatBox } from "./components/ChatBox/ChatBox";
 import { SmallMenu } from "./components/SmallMenu";
 import { LargeMenu } from "./components/LargeMenu";
+import { SettingsMenu } from "./components/SettingsMenu";
 import { Header } from "./components/Header";
 import { ChatBoxInteraction } from "./components/NLPFeatures/ChatBoxInteract";
 
-function Right({ isSmallMenuExpanded }) {
+function Right({ isSmallMenuExpanded}) {
   return (
     <div className={`right-content ${isSmallMenuExpanded ? "shifted" : ""}`}>
-      <Header username={`${localStorage.getItem('username')}`} />
+      <Header username={`${localStorage.getItem("username")}`} />
       <ChatBoxInteraction isSmallMenuExpanded={isSmallMenuExpanded} />
       <ChatBox isSmallMenuExpanded={isSmallMenuExpanded} />
       <Footer isSmallMenuExpanded={isSmallMenuExpanded} />
@@ -18,28 +19,30 @@ function Right({ isSmallMenuExpanded }) {
   );
 }
 
-function Left({ isSmallMenuExpanded, toggleMenu }) {
+function Left({ isSmallMenuExpanded , toggleMenu}) {
   return (
     <div className="left-content">
       <SmallMenu
         isSmallMenuExpanded={isSmallMenuExpanded}
         toggleMenu={toggleMenu}
       />
-      <LargeMenu isExpanded={isSmallMenuExpanded} />
+      <LargeMenu isExpanded={isSmallMenuExpanded === "history"} />
+      <SettingsMenu isExpanded={isSmallMenuExpanded === "settings"} />
     </div>
   );
 }
 
 function App() {
-  const [isSmallMenuExpanded, setIsSmallMenuExpanded] = useState(false);
+  const [expandedMenu, setExpandedMenu] = useState(null); // track which menu is expanded
 
-  const toggleMenu = () => {
-    setIsSmallMenuExpanded(!isSmallMenuExpanded);
+  const toggleMenu = (menu) => {
+    setExpandedMenu((prevMenu) => (prevMenu === menu ? null : menu)); // toggle between history, settings, and closing both
   };
+
   return (
     <div className="App">
-      <Right isSmallMenuExpanded={isSmallMenuExpanded} />
-      <Left isSmallMenuExpanded={isSmallMenuExpanded} toggleMenu={toggleMenu} />
+      <Right isSmallMenuExpanded={expandedMenu !== null} />
+      <Left isSmallMenuExpanded={expandedMenu} toggleMenu={toggleMenu} />
     </div>
   );
 }

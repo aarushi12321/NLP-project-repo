@@ -1,0 +1,86 @@
+.settings-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background-color: #b49cb94b;
+  color: white;
+  overflow: hidden;
+  z-index: 1000;
+  transition: width 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+  opacity: 0;
+  visibility: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: top;
+}
+
+.settings-menu.expanded-settings {
+  width: 250px;
+  opacity: 1;
+  visibility: visible;
+}
+
+.settings-container {
+  flex: 0.75 1;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  margin-left: 25%;
+  margin-top: 30%;
+  font-size: small;
+}
+
+.setting label.header-label {
+  font-size: larger;
+  font-weight: bolder;
+  margin-top: 10px;
+}
+
+.setting select,
+.setting input[type="range"] {
+  margin-top: 15px;
+}
+
+.setting input[type="radio"] {
+  margin-top: 10px;
+  margin-right: 5px;
+  accent-color: #301934;
+}
+
+.setting div {
+  display: flex;
+  gap: 30px;
+}
+
+.setting span {
+  margin-top: 10px;
+  margin-right: 5px;
+}
+.setting input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  background: #301934;
+  border-radius: 5px;
+  outline: none;
+  margin-bottom: 10px;
+}
+
+.setting input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease;
+}
+
+.setting input[type="range"]::-webkit-slider-thumb:hover {
+  background: #f0f0f0;
+}
