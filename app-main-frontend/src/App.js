@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
 import { Footer } from "./components/Footer";
-import { ChatBox } from "./components/ChatBox";
+import { ChatBox } from "./components/ChatBox/ChatBox";
 import { SmallMenu } from "./components/SmallMenu";
 import { LargeMenu } from "./components/LargeMenu";
 import { Header } from "./components/Header";

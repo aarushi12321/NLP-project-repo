@@ -8,7 +8,7 @@ export function Header({ username }) {
       <div className="id-container">
         <span className="id">{initial}</span>
       </div>
-      <h1 className="title">ChatBot</h1>
+      <h1 className="title">Science Chatbot for Kids!</h1>
     </header>
   );
 }
