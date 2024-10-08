@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./ChatBox.css";
 
-export function ChatBox({ isSmallMenuExpanded }) {
+export function ChatBox({ isSmallMenuExpanded, isFeature }) {
   const [messages, setMessages] = useState([]);
   const [userInput, setUserInput] = useState("");
 
@@ -10,6 +10,7 @@ export function ChatBox({ isSmallMenuExpanded }) {
     event.preventDefault();
     setMessages([]);
   };
+
   const handleSend = async (event) => {
     event.preventDefault();
     if (!userInput.trim()) return;
@@ -32,7 +33,7 @@ export function ChatBox({ isSmallMenuExpanded }) {
     <div
       className={`chatbot-query-container ${
         isSmallMenuExpanded ? "shifted" : ""
-      }`}
+      } ${isFeature ? "feature-active" : ""}`}
     >
       <form className="chat-input-form">
         <div className="chat-box">

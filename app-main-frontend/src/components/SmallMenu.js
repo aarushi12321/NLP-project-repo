@@ -8,7 +8,12 @@ import {
   faListAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
-export function SmallMenu({ isSmallMenuExpanded, toggleMenu }) {
+export function SmallMenu({
+  isSmallMenuExpanded,
+  toggleMenu,
+  isSummaryFeature,
+  toggleSummaryFeatureState,
+}) {
   return (
     <div className="small-menu-container">
       <button
@@ -27,8 +32,12 @@ export function SmallMenu({ isSmallMenuExpanded, toggleMenu }) {
       >
         <FontAwesomeIcon icon={faCogs} color="white" />
       </button>
-
-      <button className={`summary-feature-button`}>
+      <button
+        onClick={toggleSummaryFeatureState}
+        className={`summary-feature-button ${
+          isSummaryFeature ? "summary-feature-active" : ""
+        }`}
+      >
         <FontAwesomeIcon icon={faListAlt} color="white" />
       </button>
 

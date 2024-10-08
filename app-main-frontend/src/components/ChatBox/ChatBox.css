@@ -33,3 +33,7 @@ button[type="reset"] {
 button[type="reset"]:hover {
   background-color: #c8b6b6;
 }
+
+.feature-active {
+  opacity: 0;
+}
