@@ -7,6 +7,7 @@ import { LargeMenu } from "./components/LargeMenu";
 import { SettingsMenu } from "./components/SettingsMenu";
 import { Header } from "./components/Header";
 import { ChatBoxInteraction } from "./components/NLPFeatures/ChatBoxInteract";
+import { SummaryBox } from "./components/SummaryFeature/summaryBox";
 
 function Right({ isSmallMenuExpanded, isSummaryFeature }) {
   return (
@@ -20,6 +21,7 @@ function Right({ isSmallMenuExpanded, isSummaryFeature }) {
         isSmallMenuExpanded={isSmallMenuExpanded}
         isFeature={isSummaryFeature}
       />
+      <SummaryBox isSummaryFeature={isSummaryFeature} />
       <Footer isSmallMenuExpanded={isSmallMenuExpanded} />
     </div>
   );

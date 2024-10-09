@@ -1,0 +1,21 @@
+.feature-active-summary {
+  opacity: 1;
+  display: grid;
+  background-color: rgba(255, 255, 255, 0.117);
+  height: 80%;
+  width: 70%;
+  position: absolute;
+  top: 13%;
+  border-radius: 30px;
+  box-shadow: #18181847 1px;
+  overflow-y: scroll;
+  margin-left: 100px;
+  color: white;
+  transition: opacity 1s ease;
+}
+
+.feature-inactive-summary {
+  opacity: 0;
+  height: 0;
+  transition: opacity 1s ease;
+}

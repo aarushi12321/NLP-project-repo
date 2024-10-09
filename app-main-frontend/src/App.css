@@ -306,6 +306,8 @@
   margin-left: 0px;
 }
 
-.active-feature {
+.chat-box-interaction-container.active-feature,
+.chat-box-interaction-container.active-feature p {
   opacity: 0;
+  height: 0;
 }
