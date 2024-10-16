@@ -35,7 +35,7 @@ export function SmallMenu({
       <button
         onClick={toggleSummaryFeatureState}
         className={`summary-feature-button ${
-          isSummaryFeature ? "summary-feature-active" : ""
+          isSummaryFeature ? "summary-feature-active" : "summary-feature-inactive"
         }`}
       >
         <FontAwesomeIcon icon={faListAlt} color="white" />

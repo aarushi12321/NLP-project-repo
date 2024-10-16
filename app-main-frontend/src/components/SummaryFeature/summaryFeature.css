@@ -19,3 +19,17 @@
   height: 0;
   transition: opacity 1s ease;
 }
+
+.close-summary-feature-button {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  background-color: #e5383588;
+  margin-top: 10px;
+  border-width: 1px;
+  border: 1px solid white;
+  font-size: 16px;
+  transition: opacity 0s;
+}
