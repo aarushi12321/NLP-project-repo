@@ -14,7 +14,7 @@ button {
 
 .send-button:hover {
   background-color: #c3ded9;
-  color: #95689d;
+  color: black;
 }
 
 .reset-chat-button {
@@ -23,7 +23,7 @@ button {
 
 .reset-chat-button:hover {
   background-color: #c3ded9;
-  color: #95689d;
+  color: black;
 }
 
 button[type="reset"] {
