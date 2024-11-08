@@ -6,7 +6,6 @@ import { SmallMenu } from "./components/SmallMenu";
 import { LargeMenu } from "./components/LargeMenu";
 import { SettingsMenu } from "./components/SettingsMenu";
 import { Header } from "./components/Header";
-import { ChatBoxInteraction } from "./components/NLPFeatures/ChatBoxInteract";
 import { SummaryBox } from "./components/SummaryFeature/summaryBox";
 
 function Right({
@@ -17,10 +16,6 @@ function Right({
   return (
     <div className={`right-content ${isSmallMenuExpanded ? "shifted" : ""}`}>
       <Header username={`${localStorage.getItem("username")}`} />
-      <ChatBoxInteraction
-        isSmallMenuExpanded={isSmallMenuExpanded}
-        isFeature={isSummaryFeature}
-      />
       <ChatBox
         isSmallMenuExpanded={isSmallMenuExpanded}
         isFeature={isSummaryFeature}

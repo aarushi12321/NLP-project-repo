@@ -35,7 +35,6 @@ export function SummaryBox({ isSummaryFeature, toggleSummaryFeatureState }) {
       >
         <FontAwesomeIcon icon={faClose} />
       </button>
-      <span className="summary-heading">LET'S SUMMARIZE!</span>
       <div className="summary-card-outer-box">
         <SummaryCard
           title="Word Count Summary"
