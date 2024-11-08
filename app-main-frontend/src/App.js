@@ -6,19 +6,23 @@ import { SmallMenu } from "./components/SmallMenu";
 import { LargeMenu } from "./components/LargeMenu";
 import { SettingsMenu } from "./components/SettingsMenu";
 import { Header } from "./components/Header";
-import { ChatBoxInteraction } from "./components/NLPFeatures/ChatBoxInteract";
+import { SummaryBox } from "./components/SummaryFeature/summaryBox";
 
-function Right({ isSmallMenuExpanded, isSummaryFeature }) {
+function Right({
+  isSmallMenuExpanded,
+  isSummaryFeature,
+  toggleSummaryFeatureState,
+}) {
   return (
     <div className={`right-content ${isSmallMenuExpanded ? "shifted" : ""}`}>
       <Header username={`${localStorage.getItem("username")}`} />
-      <ChatBoxInteraction
-        isSmallMenuExpanded={isSmallMenuExpanded}
-        isFeature={isSummaryFeature}
-      />
       <ChatBox
         isSmallMenuExpanded={isSmallMenuExpanded}
         isFeature={isSummaryFeature}
+      />
+      <SummaryBox
+        isSummaryFeature={isSummaryFeature}
+        toggleSummaryFeatureState={toggleSummaryFeatureState}
       />
       <Footer isSmallMenuExpanded={isSmallMenuExpanded} />
     </div>
@@ -63,6 +67,7 @@ function App() {
       <Right
         isSmallMenuExpanded={expandedMenu !== null}
         isSummaryFeature={summaryFeature}
+        toggleSummaryFeatureState={toggleSummaryFeatureState}
       />
       <Left
         isSmallMenuExpanded={expandedMenu}
