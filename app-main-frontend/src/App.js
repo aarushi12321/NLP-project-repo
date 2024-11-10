@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./App.css";
 import { Footer } from "./components/Footer";
 import { ChatBox } from "./components/ChatBox/ChatBox";
@@ -34,6 +35,7 @@ function Left({
   toggleMenu,
   isSummaryFeature,
   toggleSummaryFeatureState,
+  chatSessions,
 }) {
   return (
     <div className="left-content">
@@ -43,7 +45,10 @@ function Left({
         isSummaryFeature={isSummaryFeature}
         toggleSummaryFeatureState={toggleSummaryFeatureState}
       />
-      <LargeMenu isExpanded={isSmallMenuExpanded === "history"} />
+      <LargeMenu
+        isExpanded={isSmallMenuExpanded === "history"}
+        chatSessions={chatSessions}
+      />
       <SettingsMenu isExpanded={isSmallMenuExpanded === "settings"} />
     </div>
   );
@@ -52,6 +57,33 @@ function Left({
 function App() {
   const [expandedMenu, setExpandedMenu] = useState(null);
   const [summaryFeature, setSummaryFeature] = useState(false);
+  const [chatSessions, setChatSessions] = useState([]);
+
+  useEffect(() => {
+    if (expandedMenu === "history") {
+      fetchChatSessions();
+    }
+  }, [expandedMenu]);
+
+  const fetchChatSessions = async () => {
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      console.error("User ID not found. Please log in.");
+      return;
+    }
+    try {
+      const response = await axios.get(
+        `http://localhost:5001/api/chats/getChats/${userId}`
+      );
+      if (response.data.success) {
+        setChatSessions(response.data.sessions);
+      } else {
+        console.error("Failed to fetch chat sessions");
+      }
+    } catch (error) {
+      console.error("Error fetching chat sessions:", error);
+    }
+  };
 
   const toggleMenu = (menu) => {
     setExpandedMenu((prevMenu) => (prevMenu === menu ? null : menu));
@@ -74,6 +106,7 @@ function App() {
         toggleMenu={toggleMenu}
         isSummaryFeature={summaryFeature}
         toggleSummaryFeatureState={toggleSummaryFeatureState}
+        chatSessions={chatSessions}
       />
     </div>
   );

@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 
 export function SignIn({ onAuthSuccess }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -14,14 +13,17 @@ export function SignIn({ onAuthSuccess }) {
         password,
       });
       if (response.data.success) {
-        localStorage.setItem("userEmail", email);
         localStorage.setItem("username", username);
+        localStorage.setItem("userId", response.data.userId);
+        console.log("User ID stored in localStorage:", response.data.userId);
+
         onAuthSuccess();
       } else {
         alert("Invalid credentials");
       }
     } catch (error) {
       console.error("SignIn error:", error);
+      alert("An error occurred during sign-in. Please try again.");
     }
   };
 
