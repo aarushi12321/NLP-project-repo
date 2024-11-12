@@ -1,21 +1,28 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const chatRoutes = require("./routes/chatRoutes");
+const axios = require("axios");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
 const dbConnect = async () => {
-  await mongoose.connect("mongodb://localhost:27017/mydatabase", {}).then(
-    () => {
-      console.log("connected");
-    },
-    (error) => {
-      console.error(`Connection error: ${error.stack}`);
-      process.exit(1);
-    }
-  );
+  await mongoose
+    .connect("mongodb://localhost:27017/mydatabase", {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
+    .then(
+      () => {
+        console.log("connected");
+      },
+      (error) => {
+        console.error(`Connection error: ${error.stack}`);
+        process.exit(1);
+      }
+    );
 };
 
 const UserSchema = new mongoose.Schema({
@@ -38,11 +45,13 @@ app.post("/api/signin", async (req, res) => {
   const user = await User.findOne({ username, password });
   if (user) {
     console.log("User saved:", user);
-    res.json({ success: true });
+    res.json({ success: true, userId: user._id });
   } else {
     res.json({ success: false });
   }
 });
+
+app.use("/api/chats", chatRoutes);
 
 dbConnect();
 

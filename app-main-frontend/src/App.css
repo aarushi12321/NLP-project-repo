@@ -204,19 +204,51 @@
 
 .large-menu ul {
   margin-top: 60px;
-  margin-left: 10px;
   list-style: none;
   opacity: 0;
+  list-style-type: none;
+}
+
+.user-question {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 80%;
+  display: block;
+  padding: 0;
+  margin: 8px;
+}
+
+.chat-session-item :hover {
+  cursor: pointer;
+  background-color: #301934af;
+  padding: 10px 25px;
+  width: 100%;
+  margin: 0;
+  display: block;
+  overflow-x: hidden;
+}
+
+li.chat-session-item {
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  width: 100%;
 }
 
 .large-menu.expanded-history ul {
   list-style: none;
   opacity: 1;
   transition: opacity 0.8s;
+  margin: 0;
+  margin-top: 20px;
+  margin-left: 10px;
 }
 
-.large-menu li {
-  margin: 15px 0;
+.large-menu li p {
+  padding-left: 20px;
 }
 
 .auth-page {
@@ -354,4 +386,17 @@
 .message.bot {
   background-color: #f1f1f1;
   align-self: flex-start;
+}
+
+.history-large-menu {
+  font-size: 25px;
+  font-weight: bold;
+  padding: 0;
+  margin: 0;
+}
+
+.history-large-menu p {
+  padding: 0;
+  margin: 0;
+  margin-top: 30px;
 }
