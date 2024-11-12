@@ -1,4 +1,4 @@
-export function LargeMenu({ isExpanded, chatSessions }) {
+export function LargeMenu({ isExpanded, chatSessions, handleSessionClick }) {
   return (
     <div className={`large-menu ${isExpanded ? "expanded-history" : ""}`}>
       <div className="history-large-menu">
@@ -7,11 +7,15 @@ export function LargeMenu({ isExpanded, chatSessions }) {
       <ul className={`${isExpanded ? "expanded-history" : ""}`}>
         {isExpanded && chatSessions.length > 0 ? (
           chatSessions.map((session, index) => (
-            <li className="chat-session-item" key={index}>
+            <li
+              className="chat-session-item"
+              key={index}
+              onClick={() => handleSessionClick(session)}
+            >
               <p className="user-question">
                 {session.chatHistory.length > 0
                   ? session.chatHistory[0].text
-                  : "No questions yet"}
+                  : "..."}
               </p>
             </li>
           ))

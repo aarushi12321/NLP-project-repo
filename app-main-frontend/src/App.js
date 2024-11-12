@@ -13,6 +13,7 @@ function Right({
   isSmallMenuExpanded,
   isSummaryFeature,
   toggleSummaryFeatureState,
+  currentSession,
 }) {
   return (
     <div className={`right-content ${isSmallMenuExpanded ? "shifted" : ""}`}>
@@ -20,6 +21,7 @@ function Right({
       <ChatBox
         isSmallMenuExpanded={isSmallMenuExpanded}
         isFeature={isSummaryFeature}
+        currentSession={currentSession}
       />
       <SummaryBox
         isSummaryFeature={isSummaryFeature}
@@ -36,6 +38,7 @@ function Left({
   isSummaryFeature,
   toggleSummaryFeatureState,
   chatSessions,
+  handleSessionClick,
 }) {
   return (
     <div className="left-content">
@@ -48,6 +51,7 @@ function Left({
       <LargeMenu
         isExpanded={isSmallMenuExpanded === "history"}
         chatSessions={chatSessions}
+        handleSessionClick={handleSessionClick}
       />
       <SettingsMenu isExpanded={isSmallMenuExpanded === "settings"} />
     </div>
@@ -58,6 +62,7 @@ function App() {
   const [expandedMenu, setExpandedMenu] = useState(null);
   const [summaryFeature, setSummaryFeature] = useState(false);
   const [chatSessions, setChatSessions] = useState([]);
+  const [currentSession, setCurrentSession] = useState(null);
 
   useEffect(() => {
     if (expandedMenu === "history") {
@@ -85,6 +90,12 @@ function App() {
     }
   };
 
+  const handleSessionClick = (session) => {
+    setCurrentSession(session);
+    localStorage.setItem("sessionId", session.sessionId);
+    console.log("Session loaded:", session.sessionId);
+  };
+
   const toggleMenu = (menu) => {
     setExpandedMenu((prevMenu) => (prevMenu === menu ? null : menu));
   };
@@ -100,6 +111,7 @@ function App() {
         isSmallMenuExpanded={expandedMenu !== null}
         isSummaryFeature={summaryFeature}
         toggleSummaryFeatureState={toggleSummaryFeatureState}
+        currentSession={currentSession}
       />
       <Left
         isSmallMenuExpanded={expandedMenu}
@@ -107,6 +119,7 @@ function App() {
         isSummaryFeature={summaryFeature}
         toggleSummaryFeatureState={toggleSummaryFeatureState}
         chatSessions={chatSessions}
+        handleSessionClick={handleSessionClick}
       />
     </div>
   );

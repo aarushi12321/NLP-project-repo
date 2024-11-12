@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./ChatBox.css";
 
-export function ChatBox({ isSmallMenuExpanded, isFeature }) {
+export function ChatBox({ isSmallMenuExpanded, isFeature, currentSession }) {
   const [messages, setMessages] = useState([]);
   const [userInput, setUserInput] = useState("");
 
@@ -16,12 +16,17 @@ export function ChatBox({ isSmallMenuExpanded, isFeature }) {
     }
   }, [messages]);
 
+  useEffect(() => {
+    if (currentSession) {
+      setMessages(currentSession.chatHistory);
+    }
+  }, [currentSession]);
+
   const handleReset = async (event) => {
     event.preventDefault();
     setMessages([]);
 
     const userId = localStorage.getItem("userId");
-    console.log(userId);
     if (!userId) {
       console.error("User ID not found. Please log in.");
       return;
@@ -37,8 +42,6 @@ export function ChatBox({ isSmallMenuExpanded, isFeature }) {
       });
 
       localStorage.setItem("sessionId", sessionId);
-
-      console.log("New chat session created:", sessionId);
     } catch (error) {
       console.error("Error saving the new chat session:", error);
     }
@@ -52,8 +55,6 @@ export function ChatBox({ isSmallMenuExpanded, isFeature }) {
     const updatedMessages = [...messages, newMessage];
     setMessages(updatedMessages);
 
-    console.log("User message added:", newMessage);
-
     setUserInput("");
 
     try {
@@ -61,36 +62,26 @@ export function ChatBox({ isSmallMenuExpanded, isFeature }) {
       const botMessage = { text: response, sender: "bot" };
       const finalMessages = [...updatedMessages, botMessage];
       setMessages(finalMessages);
-      console.log("Bot response added:", botMessage);
 
       const userId = localStorage.getItem("userId");
       const sessionId = localStorage.getItem("sessionId");
 
-      console.log("Session Id :", sessionId);
-
       if (userId) {
         try {
-          let existingSession;
-          try {
-            const sessionResponse = await axios.get(
-              `http://localhost:5001/api/chats/getChats/${userId}`
-            );
-            existingSession = sessionResponse.data.sessions.find(
-              (session) => session.sessionId === sessionId
-            );
-          } catch (error) {
-            console.error("Error checking for existing session:", error);
-          }
+          const sessionResponse = await axios.get(
+            `http://localhost:5001/api/chats/getChats/${userId}`
+          );
+          const existingSession = sessionResponse.data.sessions.find(
+            (session) => session.sessionId === sessionId
+          );
 
           if (existingSession) {
-            console.log("This session exists.");
             await axios.put(
               `http://localhost:5001/api/chats/updateChat/${sessionId}`,
               {
                 chatHistory: finalMessages,
               }
             );
-            console.log("Chat history updated successfully.");
           } else {
             const newSessionId = `session_${Date.now()}`;
             localStorage.setItem("sessionId", newSessionId);
@@ -99,7 +90,6 @@ export function ChatBox({ isSmallMenuExpanded, isFeature }) {
               sessionId: newSessionId,
               chatHistory: finalMessages,
             });
-            console.log("New chat session created successfully.");
           }
         } catch (error) {
           console.error("Error updating or creating chat session:", error);
@@ -138,7 +128,6 @@ export function ChatBox({ isSmallMenuExpanded, isFeature }) {
       };
 
       const response = await axios.post(api, data, { headers });
-
       return response.data.choices[0].message.content;
     } catch (error) {
       console.error("Failed to fetch the desired response:", error);
