@@ -117,14 +117,18 @@ export function ChatBox({ isSmallMenuExpanded, isFeature, currentSession }) {
         "Content-Type": "application/json",
       };
 
+      const formattedMessages = messages.map((msg) => ({
+        role: msg.sender === "user" ? "user" : "assistant",
+        content: msg.text,
+      }));
+
+      formattedMessages.push({ role: "user", content: userInput });
+
       const data = {
         model: "gpt-4o-mini",
         max_tokens: 150,
         temperature: 0.7,
-        messages: [
-          { role: "system", content: "Some help would be appreciated" },
-          { role: "user", content: message },
-        ],
+        messages: formattedMessages,
       };
 
       const response = await axios.post(api, data, { headers });
