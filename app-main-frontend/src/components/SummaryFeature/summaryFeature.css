@@ -108,7 +108,37 @@
   text-align: center;
   color: black;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 0;
 }
+
+.wordcloud-container {
+  margin-top: 30px;
+}
+
+.card-content-summary {
+  display: flex;
+  flex-direction: row;
+  gap: 50px;
+  align-items: flex-start;
+}
+
+.card-content-summary p {
+  text-align: justify;
+  line-height: 1.6;
+}
+
+.visible-card .summary-title {
+  padding: 10px;
+  margin: 10px;
+}
+
+.expanded-card .summary-title {
+  margin-bottom: 5px;
+  margin-top: -10px;
+}
+
 .close-card-button {
   height: 45px;
   width: 90px;
@@ -133,4 +163,20 @@
 
 .summary-card-outer-box::-webkit-scrollbar {
   display: none;
+}
+
+.card-content h3 {
+  margin-bottom: 10px;
+}
+
+.expanded-card .card-content h3 {
+  margin-bottom: 10px;
+}
+
+.summary-card-outer-box .summary-card.visible-card:hover {
+  background-color: #c7b4cb;
+}
+
+.summary-card-outer-box .summary-card.visible-card h3:hover {
+  color: #fff
 }
