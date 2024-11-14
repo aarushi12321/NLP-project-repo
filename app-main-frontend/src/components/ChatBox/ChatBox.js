@@ -47,6 +47,40 @@ export function ChatBox({ isSmallMenuExpanded, isFeature, currentSession }) {
     }
   };
 
+  const isScienceRelated = async(userInput) => {
+    const api = "https://api.openai.com/v1/chat/completions";
+    const headers = {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    };
+
+    const gptPrompt = `
+    Return true if this is a science question, else return false.
+    Question: "${userInput}"
+    Answer: `;
+
+    const formattedMessages = messages.map((msg) => ({
+      role: "user",
+      content: gptPrompt
+    }));
+
+    const data = {
+      model: "gpt-4o-mini",
+      max_tokens: 150,
+      temperature: 0.7,
+      messages: formattedMessages,
+    };
+  
+  try {
+    const response = await axios.post(api, data, { headers });
+    const isScienceRelated = response.data.choices[0].message.content;
+    return isScienceRelated === "True"; 
+  } catch (error) {
+    console.error("Not sure if this is a science question!", error);
+    return false; 
+  }
+  }
+
   const handleSend = async (event) => {
     event.preventDefault();
     if (!userInput.trim()) return;
@@ -56,9 +90,18 @@ export function ChatBox({ isSmallMenuExpanded, isFeature, currentSession }) {
     setMessages(updatedMessages);
 
     setUserInput("");
+    const isScienceRelatedInput = await isScienceRelated(userInput);
+    if (!isScienceRelatedInput) {
+      const botMessage = {
+        text: "This is a science chatbot. Please ask a science-related question. For example: What is photosynthesis?",
+        sender: "bot",
+      };
+      setMessages([...updatedMessages, botMessage]);
+      return;
+    }
 
     try {
-      const response = await getBotResponse(userInput);
+      const response = await getResponse(userInput);
       const botMessage = { text: response, sender: "bot" };
       const finalMessages = [...updatedMessages, botMessage];
       setMessages(finalMessages);
@@ -109,7 +152,7 @@ export function ChatBox({ isSmallMenuExpanded, isFeature, currentSession }) {
     }
   };
 
-  const getBotResponse = async (message) => {
+  const getResponse = async () => {
     try {
       const api = "https://api.openai.com/v1/chat/completions";
       const headers = {
