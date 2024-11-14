@@ -9,7 +9,12 @@ export function ChatBox({ isSmallMenuExpanded, isFeature, currentSession }) {
   const scrollRef = useRef(null);
 
   const apiKey = process.env.REACT_APP_CHAT_OPENAI_API_KEY;
-
+  const chatAPI = "https://api.openai.com/v1/chat/completions";
+  const chatData = {
+    model: "gpt-4o-mini",
+    max_tokens: 150,
+    temperature: 0.7
+  };
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -47,6 +52,83 @@ export function ChatBox({ isSmallMenuExpanded, isFeature, currentSession }) {
     }
   };
 
+  const isAmbiguous = async (userInput) => {
+    const headers = {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    };
+
+    const gptPrompt = `
+    Return true if the prompt is incomplete or too vague for you to respond. ELse return false':
+    "${userInput}"
+    `;
+
+    const formattedMessages = [
+      { role: "user", content: gptPrompt }
+    ];
+
+    const data = {
+      ...chatData,
+      messages: formattedMessages,
+    };
+
+    try {
+      const response = await axios.post(chatAPI, data, { headers });
+      const isAmbiguousPrompt = response.data.choices[0].message.content;
+      return isAmbiguousPrompt === "True"; 
+    } catch (error) {
+      console.error("Unsure if the prompt is vague", error);
+      return false;
+    }
+  };
+
+  const isIncomplete = (userInput) => {
+    const trimmedInput = userInput.trim();
+
+    const incompleteQuestions = [
+      "how does",
+      "how to",
+      "what is",
+      "why is",
+      "how can",
+      "explain the",
+      "give explaination"
+    ];
+
+    return incompleteQuestions.some(inc => trimmedInput.toLowerCase().startsWith(inc)) && !trimmedInput.includes("?");
+  };
+
+  const isScienceRelated = async(userInput) => {
+    const headers = {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    };
+
+    const gptPrompt = `
+    Return true if this is a science question, else return false.
+    Question: "${userInput}"
+    Answer: `;
+
+    const formattedMessages = messages.map((msg) => ({
+      role: "user",
+      content: gptPrompt
+    }));
+
+    const data = {
+      ...chatData,
+      messages: formattedMessages,
+    };
+  
+  try {
+    const response = await axios.post(chatAPI, data, { headers });
+    const isScienceRelated = response.data.choices[0].message.content;
+    return isScienceRelated === "True"; 
+  } catch (error) {
+    console.error("Not sure if this is a science question!", error);
+    return false; 
+  }
+  }
+
   const handleSend = async (event) => {
     event.preventDefault();
     if (!userInput.trim()) return;
@@ -57,8 +139,38 @@ export function ChatBox({ isSmallMenuExpanded, isFeature, currentSession }) {
 
     setUserInput("");
 
+    const isIncompleteInput = await isIncomplete(userInput);
+    if (isIncompleteInput) {
+      const botMessage = {
+        text: "Please enter a complete question/prompt",
+        sender: "bot",
+      };
+      setMessages([...updatedMessages, botMessage]);
+      return;
+    }
+
+    const isAmbiguousInput = await isAmbiguous(userInput);
+    if (isAmbiguousInput) {
+      const botMessage = {
+        text: "Please enter a complete and unambiguous prompt",
+        sender: "bot",
+      };
+      setMessages([...updatedMessages, botMessage]);
+      return;
+    }
+
+    const isScienceRelatedInput = await isScienceRelated(userInput);
+    if (!isScienceRelatedInput) {
+      const botMessage = {
+        text: "This is a science chatbot. Please ask a science-related question. For example: What is photosynthesis?",
+        sender: "bot",
+      };
+      setMessages([...updatedMessages, botMessage]);
+      return;
+    }
+
     try {
-      const response = await getBotResponse(userInput);
+      const response = await getResponse(userInput);
       const botMessage = { text: response, sender: "bot" };
       const finalMessages = [...updatedMessages, botMessage];
       setMessages(finalMessages);
@@ -109,9 +221,8 @@ export function ChatBox({ isSmallMenuExpanded, isFeature, currentSession }) {
     }
   };
 
-  const getBotResponse = async (message) => {
+  const getResponse = async () => {
     try {
-      const api = "https://api.openai.com/v1/chat/completions";
       const headers = {
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
@@ -124,14 +235,10 @@ export function ChatBox({ isSmallMenuExpanded, isFeature, currentSession }) {
 
       formattedMessages.push({ role: "user", content: userInput });
 
-      const data = {
-        model: "gpt-4o-mini",
-        max_tokens: 150,
-        temperature: 0.7,
-        messages: formattedMessages,
-      };
-
-      const response = await axios.post(api, data, { headers });
+      const data ={
+        ...chatData, messages: formattedMessages
+      }
+      const response = await axios.post(chatAPI, data, { headers });
       return response.data.choices[0].message.content;
     } catch (error) {
       console.error("Failed to fetch the desired response:", error);
