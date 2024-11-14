@@ -25,6 +25,21 @@ router.get("/getChats/:userId", async (req, res) => {
   }
 });
 
+router.get("/getLast10Chats/:userId", async (req, res) => {
+  try {
+    const sessions = await ChatSession.find({ userId: req.params.userId })
+      .sort({ createdAt: -1 })
+      .limit(11);
+    if (!sessions || sessions.length === 0) {
+      return res.status(404).json({ message: "No chat sessions found." });
+    }
+
+    res.status(200).json(sessions);
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 router.put("/updateChat/:sessionId", async (req, res) => {
   try {
     const updatedSession = await ChatSession.findOneAndUpdate(

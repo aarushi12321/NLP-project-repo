@@ -1,6 +1,5 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClose } from "@fortawesome/free-solid-svg-icons";
+import { CircularWordCloud } from "./circularwordcloud";
 
 export function SummaryCard({
   title,
@@ -8,6 +7,7 @@ export function SummaryCard({
   isExpanded,
   onExpand,
   onClose,
+  wordCloud,
   noExpanded,
 }) {
   return (
@@ -18,21 +18,26 @@ export function SummaryCard({
       onClick={onExpand}
     >
       <div className="card-content">
-        <h3>{title}</h3>
-        {isExpanded && (
-          <>
-            <p>{content}</p>
-            <button
-              className="close-card-button"
-              onClick={(e) => {
-                e.stopPropagation();
-                onClose();
-              }}
-            >
-              Go Back
-            </button>
-          </>
-        )}
+        <h3 className="summary-title">{title}</h3>
+        <div className="card-content-summary">
+          {isExpanded && (
+            <>
+              <div className="wordcloud-container">
+                <CircularWordCloud wordCloud={wordCloud} />
+              </div>
+              <p>{content}</p>
+              <button
+                className="close-card-button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onClose();
+                }}
+              >
+                Go Back
+              </button>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
