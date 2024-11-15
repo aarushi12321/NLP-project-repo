@@ -8,11 +8,14 @@ import { LargeMenu } from "./components/LargeMenu";
 import { SettingsMenu } from "./components/SettingsMenu";
 import { Header } from "./components/Header";
 import { SummaryBox } from "./components/SummaryFeature/summaryBox";
+import { BookRecfeature } from "./components/BookRecommenderFeature/BookRecFeature";
 
 function Right({
   isSmallMenuExpanded,
   isSummaryFeature,
   toggleSummaryFeatureState,
+  isBookFeature,
+  toggleBookFeatureState,
   currentSession,
 }) {
   return (
@@ -20,12 +23,16 @@ function Right({
       <Header username={`${localStorage.getItem("username")}`} />
       <ChatBox
         isSmallMenuExpanded={isSmallMenuExpanded}
-        isFeature={isSummaryFeature}
+        isFeature={isSummaryFeature || isBookFeature}
         currentSession={currentSession}
       />
       <SummaryBox
         isSummaryFeature={isSummaryFeature}
         toggleSummaryFeatureState={toggleSummaryFeatureState}
+      />
+      <BookRecfeature
+        isBookfeature={isBookFeature}
+        toggleBookFeatureState={toggleBookFeatureState}
       />
       <Footer isSmallMenuExpanded={isSmallMenuExpanded} />
     </div>
@@ -37,6 +44,8 @@ function Left({
   toggleMenu,
   isSummaryFeature,
   toggleSummaryFeatureState,
+  isBookFeature,
+  toggleBookFeatureState,
   chatSessions,
   handleSessionClick,
 }) {
@@ -47,6 +56,8 @@ function Left({
         toggleMenu={toggleMenu}
         isSummaryFeature={isSummaryFeature}
         toggleSummaryFeatureState={toggleSummaryFeatureState}
+        isBookFeature={isBookFeature}
+        toggleBookFeatureState={toggleBookFeatureState}
       />
       <LargeMenu
         isExpanded={isSmallMenuExpanded === "history"}
@@ -61,6 +72,7 @@ function Left({
 function App() {
   const [expandedMenu, setExpandedMenu] = useState(null);
   const [summaryFeature, setSummaryFeature] = useState(false);
+  const [BookFeature, setBookFeature] = useState(false);
   const [chatSessions, setChatSessions] = useState([]);
   const [currentSession, setCurrentSession] = useState(null);
 
@@ -103,6 +115,13 @@ function App() {
   const toggleSummaryFeatureState = () => {
     setSummaryFeature((summaryFeature) => !summaryFeature);
     setExpandedMenu(null);
+    setBookFeature(false);
+  };
+
+  const toggleBookFeatureState = () => {
+    setBookFeature((BookFeature) => !BookFeature);
+    setExpandedMenu(null);
+    setSummaryFeature(false);
   };
 
   return (
@@ -111,6 +130,8 @@ function App() {
         isSmallMenuExpanded={expandedMenu !== null}
         isSummaryFeature={summaryFeature}
         toggleSummaryFeatureState={toggleSummaryFeatureState}
+        isBookFeature={BookFeature}
+        toggleBookFeatureState={toggleBookFeatureState}
         currentSession={currentSession}
       />
       <Left
@@ -118,6 +139,8 @@ function App() {
         toggleMenu={toggleMenu}
         isSummaryFeature={summaryFeature}
         toggleSummaryFeatureState={toggleSummaryFeatureState}
+        isBookFeature={BookFeature}
+        toggleBookFeatureState={toggleBookFeatureState}
         chatSessions={chatSessions}
         handleSessionClick={handleSessionClick}
       />

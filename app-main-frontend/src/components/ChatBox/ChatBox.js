@@ -13,7 +13,7 @@ export function ChatBox({ isSmallMenuExpanded, isFeature, currentSession }) {
   const chatData = {
     model: "gpt-4o-mini",
     max_tokens: 150,
-    temperature: 0.7
+    temperature: 0.7,
   };
   useEffect(() => {
     if (scrollRef.current) {
@@ -63,9 +63,7 @@ export function ChatBox({ isSmallMenuExpanded, isFeature, currentSession }) {
     "${userInput}"
     `;
 
-    const formattedMessages = [
-      { role: "user", content: gptPrompt }
-    ];
+    const formattedMessages = [{ role: "user", content: gptPrompt }];
 
     const data = {
       ...chatData,
@@ -75,7 +73,7 @@ export function ChatBox({ isSmallMenuExpanded, isFeature, currentSession }) {
     try {
       const response = await axios.post(chatAPI, data, { headers });
       const isAmbiguousPrompt = response.data.choices[0].message.content;
-      return isAmbiguousPrompt === "True"; 
+      return isAmbiguousPrompt === "True";
     } catch (error) {
       console.error("Unsure if the prompt is vague", error);
       return false;
@@ -92,13 +90,17 @@ export function ChatBox({ isSmallMenuExpanded, isFeature, currentSession }) {
       "why is",
       "how can",
       "explain the",
-      "give explaination"
+      "give explaination",
     ];
 
-    return incompleteQuestions.some(inc => trimmedInput.toLowerCase().startsWith(inc)) && !trimmedInput.includes("?");
+    return (
+      incompleteQuestions.some((inc) =>
+        trimmedInput.toLowerCase().startsWith(inc)
+      ) && !trimmedInput.includes("?")
+    );
   };
 
-  const isScienceRelated = async(userInput) => {
+  const isScienceRelated = async (userInput) => {
     const headers = {
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
@@ -111,23 +113,23 @@ export function ChatBox({ isSmallMenuExpanded, isFeature, currentSession }) {
 
     const formattedMessages = messages.map((msg) => ({
       role: "user",
-      content: gptPrompt
+      content: gptPrompt,
     }));
 
     const data = {
       ...chatData,
       messages: formattedMessages,
     };
-  
-  try {
-    const response = await axios.post(chatAPI, data, { headers });
-    const isScienceRelated = response.data.choices[0].message.content;
-    return isScienceRelated === "True"; 
-  } catch (error) {
-    console.error("Not sure if this is a science question!", error);
-    return false; 
-  }
-  }
+
+    try {
+      const response = await axios.post(chatAPI, data, { headers });
+      const isScienceRelated = response.data.choices[0].message.content;
+      return isScienceRelated === "True";
+    } catch (error) {
+      console.error("Not sure if this is a science question!", error);
+      return false;
+    }
+  };
 
   const handleSend = async (event) => {
     event.preventDefault();
@@ -152,7 +154,7 @@ export function ChatBox({ isSmallMenuExpanded, isFeature, currentSession }) {
     const isAmbiguousInput = await isAmbiguous(userInput);
     if (isAmbiguousInput) {
       const botMessage = {
-        text: "Please enter a complete and unambiguous prompt",
+        text: "The prompt is either incomplete, ambiguous or not allowed. Please enter a complete and unambiguous prompt",
         sender: "bot",
       };
       setMessages([...updatedMessages, botMessage]);
@@ -235,9 +237,10 @@ export function ChatBox({ isSmallMenuExpanded, isFeature, currentSession }) {
 
       formattedMessages.push({ role: "user", content: userInput });
 
-      const data ={
-        ...chatData, messages: formattedMessages
-      }
+      const data = {
+        ...chatData,
+        messages: formattedMessages,
+      };
       const response = await axios.post(chatAPI, data, { headers });
       return response.data.choices[0].message.content;
     } catch (error) {

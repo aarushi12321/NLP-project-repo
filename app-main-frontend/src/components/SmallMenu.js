@@ -13,6 +13,8 @@ export function SmallMenu({
   toggleMenu,
   isSummaryFeature,
   toggleSummaryFeatureState,
+  isBookFeature,
+  toggleBookFeatureState,
 }) {
   return (
     <div className="small-menu-container">
@@ -35,13 +37,20 @@ export function SmallMenu({
       <button
         onClick={toggleSummaryFeatureState}
         className={`summary-feature-button ${
-          isSummaryFeature ? "summary-feature-active" : "summary-feature-inactive"
+          isSummaryFeature
+            ? "summary-feature-active"
+            : "summary-feature-inactive"
         }`}
       >
         <FontAwesomeIcon icon={faListAlt} color="white" />
       </button>
 
-      <button className={`book-recommender-feature-button`}>
+      <button
+        onClick={toggleBookFeatureState}
+        className={`book-recommender-feature-button ${
+          isBookFeature ? "book-feature-active" : "book-feature-inactive"
+        }`}
+      >
         <FontAwesomeIcon icon={faBookmark} color="white" />
       </button>
 

@@ -72,7 +72,7 @@
   align-self: center;
   width: 90%;
   height: 80%;
-  transition: width 0.7s ease, height 0.7s ease;
+  transition: width 0.5s ease, height 0.5s ease;
   transform-origin: center;
 }
 
@@ -175,8 +175,4 @@
 
 .summary-card-outer-box .summary-card.visible-card:hover {
   background-color: #c7b4cb;
-}
-
-.summary-card-outer-box .summary-card.visible-card h3:hover {
-  color: #fff
 }

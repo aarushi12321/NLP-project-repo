@@ -1,0 +1,38 @@
+.feature-active-book {
+  opacity: 1;
+  display: grid;
+  background-color: #b49cb94b;
+  height: 75vh;
+  width: calc(90% - 250px);
+  bottom: 5%;
+  border-radius: 10px;
+  overflow-y: scroll;
+  color: white;
+  transition: opacity 1s ease;
+  position: relative;
+  padding: 10px 0;
+  z-index: 2000;
+}
+
+.feature-inactive-book {
+  opacity: 0;
+  height: 0;
+}
+
+.close-book-feature-button {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  background-color: #cd2539;
+  margin-top: 10px;
+  border-width: 1px;
+  border: 1px solid white;
+  font-size: 16px;
+  transition: opacity 0s;
+}
+
+.close-book-feature-button:hover {
+  background-color: #850f1d;
+}
