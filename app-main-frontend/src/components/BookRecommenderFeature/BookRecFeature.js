@@ -32,7 +32,6 @@ export function BookRecfeature({ isBookfeature, toggleBookFeatureState }) {
           });
 
           combinedText = combinedText.trim();
-          console.log("combinedText:", combinedText);
 
           if (!combinedText) {
             console.error("No text found for the API request.");
@@ -73,7 +72,6 @@ export function BookRecfeature({ isBookfeature, toggleBookFeatureState }) {
       );
 
       const generatedText = response.data.choices[0].message.content.trim();
-      console.log("Generated book recommendations:", generatedText);
 
       const books = generatedText
         .split("\n")
