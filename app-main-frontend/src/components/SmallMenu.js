@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBookmark,
   faBrain,
+  faCircleInfo,
   faCogs,
   faHistory,
   faListAlt,
@@ -15,6 +16,7 @@ export function SmallMenu({
   toggleSummaryFeatureState,
   isBookFeature,
   toggleBookFeatureState,
+  setRun,
 }) {
   return (
     <div className="small-menu-container">
@@ -56,6 +58,19 @@ export function SmallMenu({
 
       <button className={`quiz-me-feature-button`}>
         <FontAwesomeIcon icon={faBrain} color="white" />
+      </button>
+
+      <button
+        className="onboarding-button"
+        onClick={() => {
+          console.log("Circle info button clicked");
+          setRun(false);
+          setTimeout(() => {
+            setRun(true);
+          }, 100);
+        }}
+      >
+        <FontAwesomeIcon icon={faCircleInfo} color="white" />
       </button>
     </div>
   );

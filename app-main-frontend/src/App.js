@@ -9,6 +9,7 @@ import { SettingsMenu } from "./components/SettingsMenu";
 import { Header } from "./components/Header";
 import { SummaryBox } from "./components/SummaryFeature/summaryBox";
 import { BookRecfeature } from "./components/BookRecommenderFeature/BookRecFeature";
+import OnboardingTour from "./components/Onboarding/OnboardingTour";
 
 function Right({
   isSmallMenuExpanded,
@@ -48,6 +49,7 @@ function Left({
   toggleBookFeatureState,
   chatSessions,
   handleSessionClick,
+  setRun,
 }) {
   return (
     <div className="left-content">
@@ -58,6 +60,7 @@ function Left({
         toggleSummaryFeatureState={toggleSummaryFeatureState}
         isBookFeature={isBookFeature}
         toggleBookFeatureState={toggleBookFeatureState}
+        setRun={setRun}
       />
       <LargeMenu
         isExpanded={isSmallMenuExpanded === "history"}
@@ -75,6 +78,11 @@ function App() {
   const [BookFeature, setBookFeature] = useState(false);
   const [chatSessions, setChatSessions] = useState([]);
   const [currentSession, setCurrentSession] = useState(null);
+  const [run, setRun] = useState(false);
+
+  useEffect(() => {
+    setRun(true);
+  }, []);
 
   useEffect(() => {
     if (expandedMenu === "history") {
@@ -143,7 +151,9 @@ function App() {
         toggleBookFeatureState={toggleBookFeatureState}
         chatSessions={chatSessions}
         handleSessionClick={handleSessionClick}
+        setRun={setRun}
       />
+      {run && <OnboardingTour />}
     </div>
   );
 }
