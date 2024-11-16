@@ -56,7 +56,8 @@ export function BookRecfeature({ isBookfeature, toggleBookFeatureState }) {
           messages: [
             {
               role: "system",
-              content: "Based on the following user conversation, please suggest 5 relevant and popular book titles along with their authors. Format the response as 'Title by Author'.",
+              content:
+                "Based on the following user conversation, please suggest 5 relevant and popular book titles along with their authors. Format the response as 'Title by Author'.",
             },
             { role: "user", content: text },
           ],
@@ -78,10 +79,21 @@ export function BookRecfeature({ isBookfeature, toggleBookFeatureState }) {
         .split("\n")
         .filter((book) => book)
         .map((book) => {
-          const [title, author] = book.split(" by ");
+          const cleanedBook = book.replace(/^\d+\.\s/, "").trim();
+
+          const [title, author] = cleanedBook.split(" by ");
+          const cleanedTitle =
+            title && title !== '""'
+              ? title.replace(/\*\*/g, "").trim()
+              : "Unknown";
+          const cleanedAuthor =
+            author && author !== '""'
+              ? author.replace(/\*\*/g, "").trim()
+              : "Unknown";
+
           return {
-            title: title ? title.trim() : "Unknown",
-            author: author ? author.trim() : "Unknown",
+            title: cleanedTitle,
+            author: cleanedAuthor,
           };
         });
 
