@@ -7,7 +7,6 @@
   bottom: 5%;
   border-radius: 10px;
   overflow-y: scroll;
-  color: white;
   transition: opacity 1s ease;
   position: relative;
   padding: 10px 0;
@@ -35,4 +34,59 @@
 
 .close-book-feature-button:hover {
   background-color: #850f1d;
+}
+
+.book-feature-outer-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.book-card-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 15px;
+  padding: 10px;
+  width: 100%;
+  scrollbar-width: thin;
+  margin-top: 20px;
+}
+
+.book-card {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  flex: 0 0 auto;
+  width: 80%;
+  transition: transform 0.2s;
+  align-self: center;
+}
+
+.book-card:hover {
+  transform: translateY(-5px);
+}
+
+.book-title {
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.book-author {
+  font-size: 0.95em;
+  color: #555;
+}
+
+.loading-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  padding: 15px;
+  min-width: 250px;
+  flex: 0 0 auto;
+  color: white;
 }
