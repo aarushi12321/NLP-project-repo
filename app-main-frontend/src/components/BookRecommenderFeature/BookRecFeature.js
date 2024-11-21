@@ -82,7 +82,7 @@ export function BookRecfeature({ isBookfeature, toggleBookFeatureState }) {
           const [title, author] = cleanedBook.split(" by ");
           const cleanedTitle =
             title && title !== '""'
-              ? title.replace(/\*\*/g, "").trim()
+              ? title.replace(/\*\*/g, "").replace(/"/g, "").trim()
               : "Unknown";
           const cleanedAuthor =
             author && author !== '""'

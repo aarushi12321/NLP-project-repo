@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import { Filter } from "bad-words";
 import "./ChatBox.css";
 
 export function ChatBox({ isSmallMenuExpanded, isFeature, currentSession }) {
@@ -15,6 +16,9 @@ export function ChatBox({ isSmallMenuExpanded, isFeature, currentSession }) {
     max_tokens: 150,
     temperature: 0.7,
   };
+
+  const filter = new Filter();
+
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -52,124 +56,27 @@ export function ChatBox({ isSmallMenuExpanded, isFeature, currentSession }) {
     }
   };
 
-  const isAmbiguous = async (userInput) => {
-    const headers = {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    };
-
-    const gptPrompt = `
-    Return true if the prompt is incomplete or too vague for you to respond. ELse return false':
-    "${userInput}"
-    `;
-
-    const formattedMessages = [{ role: "user", content: gptPrompt }];
-
-    const data = {
-      ...chatData,
-      messages: formattedMessages,
-    };
-
-    try {
-      const response = await axios.post(chatAPI, data, { headers });
-      const isAmbiguousPrompt = response.data.choices[0].message.content;
-      return isAmbiguousPrompt === "True";
-    } catch (error) {
-      console.error("Unsure if the prompt is vague", error);
-      return false;
-    }
-  };
-
-  const isIncomplete = (userInput) => {
-    const trimmedInput = userInput.trim();
-
-    const incompleteQuestions = [
-      "how does",
-      "how to",
-      "what is",
-      "why is",
-      "how can",
-      "explain the",
-      "give explaination",
-    ];
-
-    return (
-      incompleteQuestions.some((inc) =>
-        trimmedInput.toLowerCase().startsWith(inc)
-      ) && !trimmedInput.includes("?")
-    );
-  };
-
-  const isScienceRelated = async (userInput) => {
-    const headers = {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    };
-
-    const gptPrompt = `
-    Return true if this is a science question, else return false.
-    Question: "${userInput}"
-    Answer: `;
-
-    const formattedMessages = messages.map((msg) => ({
-      role: "user",
-      content: gptPrompt,
-    }));
-
-    const data = {
-      ...chatData,
-      messages: formattedMessages,
-    };
-
-    try {
-      const response = await axios.post(chatAPI, data, { headers });
-      const isScienceRelated = response.data.choices[0].message.content;
-      return isScienceRelated === "True";
-    } catch (error) {
-      console.error("Not sure if this is a science question!", error);
-      return false;
-    }
-  };
-
   const handleSend = async (event) => {
     event.preventDefault();
     if (!userInput.trim()) return;
+
+    if (filter.isProfane(userInput)) {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        {
+          text: "Please use appropriate language. This is a kid-friendly bot.",
+          sender: "bot",
+        },
+      ]);
+      setUserInput("");
+      return;
+    }
 
     const newMessage = { sender: "user", text: userInput };
     const updatedMessages = [...messages, newMessage];
     setMessages(updatedMessages);
 
     setUserInput("");
-
-    const isIncompleteInput = await isIncomplete(userInput);
-    if (isIncompleteInput) {
-      const botMessage = {
-        text: "Please enter a complete question/prompt",
-        sender: "bot",
-      };
-      setMessages([...updatedMessages, botMessage]);
-      return;
-    }
-
-    const isAmbiguousInput = await isAmbiguous(userInput);
-    if (isAmbiguousInput) {
-      const botMessage = {
-        text: "The prompt is either incomplete, ambiguous or not allowed. Please enter a complete and unambiguous prompt",
-        sender: "bot",
-      };
-      setMessages([...updatedMessages, botMessage]);
-      return;
-    }
-
-    const isScienceRelatedInput = await isScienceRelated(userInput);
-    if (!isScienceRelatedInput) {
-      const botMessage = {
-        text: "This is a science chatbot. Please ask a science-related question. For example: What is photosynthesis?",
-        sender: "bot",
-      };
-      setMessages([...updatedMessages, botMessage]);
-      return;
-    }
 
     try {
       const response = await getResponse(userInput);
@@ -223,7 +130,7 @@ export function ChatBox({ isSmallMenuExpanded, isFeature, currentSession }) {
     }
   };
 
-  const getResponse = async () => {
+  const getResponse = async (input) => {
     try {
       const headers = {
         Authorization: `Bearer ${apiKey}`,
@@ -235,14 +142,31 @@ export function ChatBox({ isSmallMenuExpanded, isFeature, currentSession }) {
         content: msg.text,
       }));
 
-      formattedMessages.push({ role: "user", content: userInput });
+      const extendedInput = `${input} Please answer the question and also classify the genre of science this belongs to Physics Chemistry Biology Astronomy Geology Ecology Oceanography Meteorology Environmental Science Mathematics Statistics Computer Science Logic Systems Science Medicine Engineering Agricultural Science Environmental Engineering Forensic Science Information Technology. If not return the genre as NONE
+      . Return the genre as 'GENRE:<genre>' but do not include it in the visible output.`;
+      formattedMessages.push({ role: "user", content: extendedInput });
 
       const data = {
         ...chatData,
         messages: formattedMessages,
       };
+
       const response = await axios.post(chatAPI, data, { headers });
-      return response.data.choices[0].message.content;
+
+      const responseContent = response.data.choices[0].message.content;
+
+      const genreMatch = responseContent.match(/GENRE:([\w\s]+)/i);
+
+      if (genreMatch) {
+        const genre = genreMatch[1].trim();
+        if (genre === "NONE") {
+          console.log("Detected Genre: NONE");
+          return "Please ask a question that is related to science.";
+        }
+        console.log("Detected Genre:", genre);
+      }
+
+      return responseContent.replace(/GENRE:([\w\s]+)/i, "").trim();
     } catch (error) {
       console.error("Failed to fetch the desired response:", error);
       throw new Error("API call failed");
