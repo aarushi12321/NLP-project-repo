@@ -55,11 +55,11 @@ export function QuizFeature({ isQuizFeature, toggleQuizFeatureState, currentSess
             {
               role: "system",
               content:
-                "Based on the following user conversation, please generate a set of 5 quiz questions with multiple choice options. Format the response as 'Question: [question]\nOptions: A) [option1], B) [option2], C) [option3], D) [option4]\nCorrect Answer: [A/B/C/D]'.",
+                "Based on the following user conversation, please generate a set of exactly 5 quiz questions with exactly 4 multiple choice options. Format the response as 'Question: [question]\nOptions: A) [option1], B) [option2], C) [option3], D) [option4]\nCorrect Answer: [A/B/C/D]'.",
             },
             { role: "user", content: text },
           ],
-          max_tokens: 400,
+          max_tokens: 500,
           temperature: 0.7,
         },
         {
