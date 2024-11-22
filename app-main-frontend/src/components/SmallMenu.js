@@ -16,6 +16,8 @@ export function SmallMenu({
   toggleSummaryFeatureState,
   isBookFeature,
   toggleBookFeatureState,
+  isQuizFeature,
+  toggleQuizFeatureState,
   setRun,
 }) {
   return (
@@ -56,7 +58,12 @@ export function SmallMenu({
         <FontAwesomeIcon icon={faBookmark} color="white" />
       </button>
 
-      <button className={`quiz-me-feature-button`}>
+      <button 
+          onClick={toggleQuizFeatureState}
+          className={`quiz-me-feature-button ${
+              isQuizFeature ? "Quiz-feature-active" : "Quiz-feature-inactive"
+          }`}
+      >
         <FontAwesomeIcon icon={faBrain} color="white" />
       </button>
 
