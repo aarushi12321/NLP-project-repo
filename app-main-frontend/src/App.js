@@ -9,6 +9,7 @@ import { SettingsMenu } from "./components/SettingsMenu";
 import { Header } from "./components/Header";
 import { SummaryBox } from "./components/SummaryFeature/summaryBox";
 import { BookRecfeature } from "./components/BookRecommenderFeature/BookRecFeature";
+import { QuizFeature } from "./components/QuizFeatureFolder/QuizFeature";
 import OnboardingTour from "./components/Onboarding/OnboardingTour";
 
 function Right({
@@ -17,24 +18,39 @@ function Right({
   toggleSummaryFeatureState,
   isBookFeature,
   toggleBookFeatureState,
+  isQuizFeature,
+  toggleQuizFeatureState,
   currentSession,
 }) {
   return (
     <div className={`right-content ${isSmallMenuExpanded ? "shifted" : ""}`}>
       <Header username={`${localStorage.getItem("username")}`} />
-      <ChatBox
-        isSmallMenuExpanded={isSmallMenuExpanded}
-        isFeature={isSummaryFeature || isBookFeature}
-        currentSession={currentSession}
-      />
-      <SummaryBox
-        isSummaryFeature={isSummaryFeature}
-        toggleSummaryFeatureState={toggleSummaryFeatureState}
-      />
-      <BookRecfeature
-        isBookfeature={isBookFeature}
-        toggleBookFeatureState={toggleBookFeatureState}
-      />
+      {!isSummaryFeature && !isBookFeature && !isQuizFeature && (
+        <ChatBox
+          isSmallMenuExpanded={isSmallMenuExpanded}
+          isFeature={isSummaryFeature || isBookFeature || isQuizFeature}
+          currentSession={currentSession}
+        />
+      )}
+      {isSummaryFeature && (
+        <SummaryBox
+          isSummaryFeature={isSummaryFeature}
+          toggleSummaryFeatureState={toggleSummaryFeatureState}
+        />
+      )}
+      {isBookFeature && (
+        <BookRecfeature
+          isBookfeature={isBookFeature}
+          toggleBookFeatureState={toggleBookFeatureState}
+        />
+      )}
+      {isQuizFeature && (
+        <QuizFeature
+          isQuizFeature={isQuizFeature}
+          toggleQuizFeatureState={toggleQuizFeatureState}
+          currentSession={currentSession}
+        />
+      )}
       <Footer isSmallMenuExpanded={isSmallMenuExpanded} />
     </div>
   );
@@ -47,6 +63,8 @@ function Left({
   toggleSummaryFeatureState,
   isBookFeature,
   toggleBookFeatureState,
+  isQuizFeature,
+  toggleQuizFeatureState,
   chatSessions,
   handleSessionClick,
   setRun,
@@ -60,6 +78,8 @@ function Left({
         toggleSummaryFeatureState={toggleSummaryFeatureState}
         isBookFeature={isBookFeature}
         toggleBookFeatureState={toggleBookFeatureState}
+        isQuizFeature={isQuizFeature}
+        toggleQuizFeatureState={toggleQuizFeatureState}
         setRun={setRun}
       />
       <LargeMenu
@@ -76,6 +96,7 @@ function App() {
   const [expandedMenu, setExpandedMenu] = useState(null);
   const [summaryFeature, setSummaryFeature] = useState(false);
   const [BookFeature, setBookFeature] = useState(false);
+  const [QuizFeature, setQuizFeature] = useState(false);
   const [chatSessions, setChatSessions] = useState([]);
   const [currentSession, setCurrentSession] = useState(null);
   const [run, setRun] = useState(false);
@@ -124,14 +145,22 @@ function App() {
     setSummaryFeature((summaryFeature) => !summaryFeature);
     setExpandedMenu(null);
     setBookFeature(false);
+    setQuizFeature(false);
   };
 
   const toggleBookFeatureState = () => {
     setBookFeature((BookFeature) => !BookFeature);
     setExpandedMenu(null);
     setSummaryFeature(false);
+    setQuizFeature(false);
   };
-
+  
+  const toggleQuizFeatureState = () => {
+    setQuizFeature((prevQuizFeature) => !prevQuizFeature);
+    setExpandedMenu(null);
+    setSummaryFeature(false);
+    setBookFeature(false);
+  };
   return (
     <div className="App">
       <Right
@@ -140,6 +169,8 @@ function App() {
         toggleSummaryFeatureState={toggleSummaryFeatureState}
         isBookFeature={BookFeature}
         toggleBookFeatureState={toggleBookFeatureState}
+        isQuizFeature={QuizFeature}
+        toggleQuizFeatureState={toggleQuizFeatureState}
         currentSession={currentSession}
       />
       <Left
@@ -149,6 +180,8 @@ function App() {
         toggleSummaryFeatureState={toggleSummaryFeatureState}
         isBookFeature={BookFeature}
         toggleBookFeatureState={toggleBookFeatureState}
+        isQuizFeature={QuizFeature}
+        toggleQuizFeatureState={toggleQuizFeatureState}
         chatSessions={chatSessions}
         handleSessionClick={handleSessionClick}
         setRun={setRun}
