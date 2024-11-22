@@ -42,6 +42,7 @@ function Right({
         <BookRecfeature
           isBookfeature={isBookFeature}
           toggleBookFeatureState={toggleBookFeatureState}
+          currentSession={currentSession}
         />
       )}
       {isQuizFeature && (

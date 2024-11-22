@@ -4,47 +4,30 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import "./BookFeature.css";
 
-export function BookRecfeature({ isBookfeature, toggleBookFeatureState }) {
-  const [chats, setChats] = useState([]);
+
+export function BookRecfeature({ isBookfeature, toggleBookFeatureState, currentSession }) {
   const [recommendedBooks, setRecommendedBooks] = useState([]);
 
-  const userId = localStorage.getItem("userId");
-
   useEffect(() => {
-    if (!userId) {
-      console.error("User ID not found. Please log in.");
-      return;
-    }
-
-    if (isBookfeature) {
-      axios
-        .get(`http://localhost:5001/api/chats/getLast10Chats/${userId}`)
-        .then((response) => {
-          setChats(response.data);
-
-          let combinedText = "";
-          response.data.forEach((chat) => {
-            if (chat.chatHistory && chat.chatHistory.length > 0) {
-              chat.chatHistory.forEach((message) => {
-                combinedText += message.text + " ";
-              });
-            }
-          });
-
-          combinedText = combinedText.trim();
-
-          if (!combinedText) {
-            console.error("No text found for the API request.");
-            return;
-          }
-
-          fetchBookRecommendations(combinedText);
-        })
-        .catch((error) => {
-          console.error("Error fetching chat history:", error);
+    if (isBookfeature && currentSession) {
+      let combinedText = "";
+      if (currentSession.chatHistory && currentSession.chatHistory.length > 0) {
+        currentSession.chatHistory.forEach((message) => {
+          combinedText += message.text + " ";
         });
+      }
+
+      combinedText = combinedText.trim();
+
+      if (!combinedText) {
+        console.error("No text found for the API request.");
+        return;
+      }
+
+      fetchBookRecommendations(combinedText);
     }
-  }, [isBookfeature, userId]);
+  }, [isBookfeature, currentSession]);
+
 
   const fetchBookRecommendations = async (text) => {
     try {
@@ -56,7 +39,7 @@ export function BookRecfeature({ isBookfeature, toggleBookFeatureState }) {
             {
               role: "system",
               content:
-                "Based on the following user conversation, please suggest 5 relevant and popular book titles along with their authors. Format the response as 'Title by Author'.",
+                "Based on the following user conversation, please suggest exactly 5 relevant and popular book titles along with their authors. Format the response as 'Title by Author'.",
             },
             { role: "user", content: text },
           ],
