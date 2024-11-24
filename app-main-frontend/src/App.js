@@ -21,6 +21,8 @@ function Right({
   isQuizFeature,
   toggleQuizFeatureState,
   currentSession,
+  optionLength,
+  responseType,
 }) {
   return (
     <div className={`right-content ${isSmallMenuExpanded ? "shifted" : ""}`}>
@@ -30,6 +32,8 @@ function Right({
           isSmallMenuExpanded={isSmallMenuExpanded}
           isFeature={isSummaryFeature || isBookFeature || isQuizFeature}
           currentSession={currentSession}
+          optionLength={optionLength}
+          responseType={responseType}
         />
       )}
       {isSummaryFeature && (
@@ -69,6 +73,10 @@ function Left({
   chatSessions,
   handleSessionClick,
   setRun,
+  optionLength,
+  setOptionLength,
+  responseType,
+  setResponseType,
 }) {
   return (
     <div className="left-content">
@@ -88,7 +96,13 @@ function Left({
         chatSessions={chatSessions}
         handleSessionClick={handleSessionClick}
       />
-      <SettingsMenu isExpanded={isSmallMenuExpanded === "settings"} />
+      <SettingsMenu 
+        isExpanded={isSmallMenuExpanded === "settings"}
+        optionLength={optionLength}
+        setOptionLength={setOptionLength}
+        responseType={responseType}
+        setResponseType={setResponseType}
+      />
     </div>
   );
 }
@@ -101,6 +115,8 @@ function App() {
   const [chatSessions, setChatSessions] = useState([]);
   const [currentSession, setCurrentSession] = useState(null);
   const [run, setRun] = useState(false);
+  const [optionLength, setOptionLength] = useState(2);
+  const [responseType, setResponseType] = useState("descriptive");
 
   useEffect(() => {
     setRun(true);
@@ -162,6 +178,7 @@ function App() {
     setSummaryFeature(false);
     setBookFeature(false);
   };
+
   return (
     <div className="App">
       <Right
@@ -173,6 +190,8 @@ function App() {
         isQuizFeature={QuizFeature}
         toggleQuizFeatureState={toggleQuizFeatureState}
         currentSession={currentSession}
+        optionLength={optionLength}
+        responseType={responseType}
       />
       <Left
         isSmallMenuExpanded={expandedMenu}
@@ -186,6 +205,10 @@ function App() {
         chatSessions={chatSessions}
         handleSessionClick={handleSessionClick}
         setRun={setRun}
+        optionLength={optionLength}
+        setOptionLength={setOptionLength}
+        responseType={responseType}
+        setResponseType={setResponseType}
       />
       {run && <OnboardingTour />}
     </div>

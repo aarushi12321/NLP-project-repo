@@ -1,11 +1,9 @@
-import { useState } from "react";
+import React from "react";
 import "./SettingsMenu.css";
-export function SettingsMenu({ isExpanded }) {
-  const [optionLength, setOptionLength] = useState(2);
-  const [responseType, setResponseType] = useState("descriptive");
 
+export function SettingsMenu({ isExpanded, optionLength, setOptionLength, responseType, setResponseType }) {
   const handleChangeInOptionLength = (e) => {
-    setOptionLength(e.target.value);
+    setOptionLength(Number(e.target.value));
   };
 
   const handleChangeInResponseType = (e) => {
@@ -13,9 +11,9 @@ export function SettingsMenu({ isExpanded }) {
   };
 
   const getOptionLengthLabel = (value) => {
-    if (value == 1) return "Small";
-    if (value == 2) return "Medium";
-    if (value == 3) return "Large";
+    if (value === 1) return "Small";
+    if (value === 2) return "Medium";
+    if (value === 3) return "Large";
   };
 
   return (

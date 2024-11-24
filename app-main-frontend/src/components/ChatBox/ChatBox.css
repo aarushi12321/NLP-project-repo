@@ -21,6 +21,11 @@ button {
   background-color: #e53935;
 }
 
+.chat-input-form {
+  display: flex;
+  justify-content: flex-start;
+}
+
 .reset-chat-button:hover {
   background-color: #c3ded9;
   color: black;
@@ -32,6 +37,18 @@ button[type="reset"] {
 
 button[type="reset"]:hover {
   background-color: #c8b6b6;
+}
+
+.chat-box {
+  text-align: left;
+}
+
+.message {
+  text-align: left;
+}
+
+.message p, .message div {
+  text-align: left;
 }
 
 .feature-active,
