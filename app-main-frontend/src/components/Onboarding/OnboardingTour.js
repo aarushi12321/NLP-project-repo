@@ -5,7 +5,7 @@ const OnboardingTour = ({ run }) => {
     {
       target: ".onboarding-button",
       content:
-        "Hello! I am Jarvis, your very own sci-bot. Before you begin asking me questions, would you like to start a tour?",
+        "Hello! I am AVA, your very own sci-bot. Before you begin asking me questions, would you like to start a tour?",
       disableBeacon: true,
     },
     {
