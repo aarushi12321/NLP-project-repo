@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { Filter } from "bad-words";
+import parse from 'html-react-parser';
 import "./ChatBox.css";
 
-export function ChatBox({ isSmallMenuExpanded, isFeature, currentSession }) {
+export function ChatBox({ isSmallMenuExpanded, isFeature, currentSession, optionLength, responseType }) {
   const [messages, setMessages] = useState([]);
   const [userInput, setUserInput] = useState("");
 
@@ -13,7 +14,6 @@ export function ChatBox({ isSmallMenuExpanded, isFeature, currentSession }) {
   const chatAPI = "https://api.openai.com/v1/chat/completions";
   const chatData = {
     model: "gpt-4o-mini",
-    max_tokens: 150,
     temperature: 0.7,
   };
 
@@ -130,6 +130,7 @@ export function ChatBox({ isSmallMenuExpanded, isFeature, currentSession }) {
     }
   };
 
+  // CHANGES START HERE
   const getResponse = async (input) => {
     try {
       const headers = {
@@ -142,18 +143,64 @@ export function ChatBox({ isSmallMenuExpanded, isFeature, currentSession }) {
         content: msg.text,
       }));
 
-      const extendedInput = `${input} Please answer the question and also classify the genre of science this belongs to Physics Chemistry Biology Astronomy Geology Ecology Oceanography Meteorology Environmental Science Mathematics Statistics Computer Science Logic Systems Science Medicine Engineering Agricultural Science Environmental Engineering Forensic Science Information Technology. If not return the genre as NONE
-      . Return the genre as 'GENRE:<genre>' but do not include it in the visible output.`;
-      formattedMessages.push({ role: "user", content: extendedInput });
+      let maxTokens;
+      let responseInstructions;
+      switch(optionLength) {
+        case 1: 
+        maxTokens = 100;
+        responseInstructions = `Provide a brief, concise answer in strictly not more than ${maxTokens} tokens.`;
+        break;
+      case 2: 
+        maxTokens = 200;
+        responseInstructions = `Provide a moderately detailed answer in strictly not more than ${maxTokens} tokens.`;
+        break;
+      case 3: 
+        maxTokens = 400;
+        responseInstructions = `Provide a comprehensive answer in strictly not more than ${maxTokens} tokens.`;
+        break;
+      default: 
+        maxTokens = 200;
+        responseInstructions = "Provide a moderately detailed answer.";
+      }
+
+      const formattedResponseType = responseType === 'bullet' 
+        ? 'in bullet points' 
+        : 'in descriptive paragraphs';
+
+      const extendedInput = `${input} ${responseInstructions} Please answer the question ${formattedResponseType}. Ensure the response is complete and coherent without cutting off mid-thought. Also, classify the genre of science this belongs to (Physics, Chemistry, Biology, Astronomy, Geology, Ecology, Oceanography, Meteorology, Environmental Science, Mathematics, Statistics, Computer Science, Logic, Systems Science, Medicine, Engineering, Agricultural Science, Environmental Engineering, Forensic Science, Information Technology). If not applicable, return NONE. Return the genre as 'GENRE:<genre>' but do not include it in the visible output.`;
 
       const data = {
         ...chatData,
-        messages: formattedMessages,
+        max_tokens: maxTokens,
+        messages: [
+          ...formattedMessages,
+          { role: "user", content: extendedInput }
+        ],
       };
 
       const response = await axios.post(chatAPI, data, { headers });
 
-      const responseContent = response.data.choices[0].message.content;
+      let responseContent = response.data.choices[0].message.content;
+
+      // response format
+      if (responseType === 'bullet') {
+        // Move content after dash to a new line, then remove dash and bold text between dash and colon
+        responseContent = responseContent.replace(/- (.*)/g, '<br>$1');
+        responseContent = responseContent.replace(/<br>(.*?):/g, '<br><strong>$1:</strong>');
+        
+        // Ensure each bullet point starts on a new line
+        responseContent = responseContent.replace(/•/g, '<br>•');
+        responseContent = responseContent.replace(/^\s*•/gm, '$1<br>•');
+        responseContent = responseContent.replace(/^<br>/, '');
+      } else {
+        // Format paragraphs
+        responseContent = responseContent.replace(/\n\n/g, '<br><br>');
+      }
+      
+      // Additional formatting for bold and italic
+      responseContent = responseContent.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      responseContent = responseContent.replace(/\*(.*?)\*/g, '<em>$1</em>');
+      responseContent = responseContent.replace(/__(.*?)__/g, '<u>$1</u>');
 
       const genreMatch = responseContent.match(/GENRE:([\w\s]+)/i);
 
@@ -172,6 +219,7 @@ export function ChatBox({ isSmallMenuExpanded, isFeature, currentSession }) {
       throw new Error("API call failed");
     }
   };
+  // CHANGES END HERE
 
   return (
     <div
@@ -185,7 +233,11 @@ export function ChatBox({ isSmallMenuExpanded, isFeature, currentSession }) {
             key={index}
             className={`message ${message.sender === "user" ? "user" : "bot"}`}
           >
-            <p>{message.text}</p>
+            {message.sender === "user" ? (
+              <p>{message.text}</p>
+            ) : (
+              <div>{parse(message.text)}</div>
+            )}
           </div>
         ))}
       </div>
