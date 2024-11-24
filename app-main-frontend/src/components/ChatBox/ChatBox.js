@@ -160,7 +160,7 @@ export function ChatBox({ isSmallMenuExpanded, isFeature, currentSession, option
         break;
       default: 
         maxTokens = 200;
-        responseInstructions = "Provide a moderately detailed answer.";
+        responseInstructions = `Provide an answer in descriptive paragraphs without bullets or numbers in strictly not more than ${maxTokens} tokens.`;
       }
 
       const formattedResponseType = responseType === 'bullet' 
