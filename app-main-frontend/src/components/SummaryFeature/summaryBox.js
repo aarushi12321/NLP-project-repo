@@ -115,7 +115,7 @@ export function SummaryBox({ isSummaryFeature, toggleSummaryFeatureState }) {
         const response = await axios.get(
           `http://localhost:5001/api/chats/getLast10Chats/${userId}`
         );
-        const chatHistory = response.data.slice(1);
+        const chatHistory = response.data.filter(array => array.length > 0);
 
         const processedChats = await Promise.all(
           chatHistory.map(async (chat, index) => {

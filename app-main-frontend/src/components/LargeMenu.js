@@ -20,7 +20,7 @@ export function LargeMenu({ isExpanded, chatSessions, handleSessionClick }) {
             </li>
           ))
         ) : (
-          <li className="chat-session-item">No chat sessions yet</li>
+          <li className="chat-session-item default">No chat sessions yet</li>
         )}
       </ul>
     </div>
