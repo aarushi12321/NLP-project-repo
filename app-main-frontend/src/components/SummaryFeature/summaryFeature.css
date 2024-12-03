@@ -176,3 +176,9 @@
 .summary-card-outer-box .summary-card.visible-card:hover {
   background-color: #c7b4cb;
 }
+
+.loading-card-book {
+  position: relative;
+  top: -40%;
+  left: 35%;
+}

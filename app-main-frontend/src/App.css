@@ -242,6 +242,10 @@
   overflow-x: hidden;
 }
 
+.chat-session-item.default {
+  padding-left: 20px;
+}
+
 li.chat-session-item {
   text-align: left;
   white-space: nowrap;

@@ -96,7 +96,7 @@ function Left({
         chatSessions={chatSessions}
         handleSessionClick={handleSessionClick}
       />
-      <SettingsMenu 
+      <SettingsMenu
         isExpanded={isSmallMenuExpanded === "settings"}
         optionLength={optionLength}
         setOptionLength={setOptionLength}
@@ -125,6 +125,10 @@ function App() {
   useEffect(() => {
     if (expandedMenu === "history") {
       fetchChatSessions();
+      const interval = setInterval(() => {
+        fetchChatSessions();
+      }, 10000);
+      return () => clearInterval(interval);
     }
   }, [expandedMenu]);
 
@@ -139,13 +143,31 @@ function App() {
         `http://localhost:5001/api/chats/getChats/${userId}`
       );
       if (response.data.success) {
-        setChatSessions(response.data.sessions);
+        const uniqueSessions = removeDuplicatesAndFilterEmpty(
+          response.data.sessions
+        );
+        setChatSessions(uniqueSessions);
       } else {
         console.error("Failed to fetch chat sessions");
       }
     } catch (error) {
       console.error("Error fetching chat sessions:", error);
     }
+  };
+
+  const removeDuplicatesAndFilterEmpty = (sessions) => {
+    const seen = new Set();
+    return sessions.filter((session) => {
+      if (
+        session.chatHistory.length === 0 || 
+        session.chatHistory[0].text.trim() === "" || 
+        seen.has(session.sessionId) 
+      ) {
+        return false;
+      }
+      seen.add(session.sessionId);
+      return true;
+    });
   };
 
   const handleSessionClick = (session) => {
@@ -171,7 +193,7 @@ function App() {
     setSummaryFeature(false);
     setQuizFeature(false);
   };
-  
+
   const toggleQuizFeatureState = () => {
     setQuizFeature((prevQuizFeature) => !prevQuizFeature);
     setExpandedMenu(null);
