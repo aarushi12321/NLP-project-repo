@@ -174,7 +174,7 @@ export function SummaryBox({ isSummaryFeature, toggleSummaryFeatureState }) {
             />
           ))
         ) : (
-          <div className="loading-card">
+          <div className="loading-card-book">
             <p>Loading summary...</p>
           </div>
         )}
